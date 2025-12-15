@@ -42,4 +42,12 @@ class University extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    /**
+     * Программы университета.
+     */
+    public function programs()
+    {
+        return $this->hasMany(Program::class);
+    }
 }

@@ -9,7 +9,7 @@ const devPort = Number(process.env.VITE_DEV_PORT ?? 5173);
 export default defineConfig({
     plugins: [
         laravel({
-            input: ["resources/css/app.css", "resources/js/main.tsx"],
+            input: ["resources/css/app.css", "resources/js/widgets.ts"],
             refresh: true,
         }),
         react(),

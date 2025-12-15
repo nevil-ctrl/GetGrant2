@@ -49,6 +49,9 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Views для аутентификации
+        Fortify::loginView(fn() => view('auth.login'));
+        Fortify::registerView(fn() => view('auth.register'));
         // Views для сброса пароля (Blade шаблоны)
         Fortify::requestPasswordResetLinkView(fn() => view('auth.forgot-password'));
         Fortify::resetPasswordView(fn($request) => view('auth.reset-password', ['request' => $request]));

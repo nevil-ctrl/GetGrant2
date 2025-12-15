@@ -58,7 +58,7 @@
 
     <p class="mt-6 text-center text-sm text-slate-600">
         Нет аккаунта?
-        <a href="{{ route('register') }}" class="font-semibold text-blue-600 hover:text-blue-500">Создать</a>
+        <a href="{{ route('register.form') }}" class="font-semibold text-blue-600 hover:text-blue-500">Создать</a>
     </p>
 </div>
 </body>
