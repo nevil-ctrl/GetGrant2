@@ -23,6 +23,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // Development-only CSP to allow Vite/react-refresh to use eval in local
+            \App\Http\Middleware\DevCsp::class,
         ],
 
         'api' => [

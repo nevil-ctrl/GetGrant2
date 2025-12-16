@@ -12,6 +12,7 @@
 
         <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-[#1A1A1A]">
             <a href="{{ route('pages.home') }}" class="hover:text-[#1055b2] transition-colors">Главная</a>
+            <a href="{{ route('pages.home') }}" class="hover:text-[#1055b2] transition-colors">dhfvefbhv</a>
             <a href="{{ route('pages.countries') }}" class="hover:text-[#1055b2] transition-colors">Страны</a>
             <a href="{{ route('pages.universities') }}" class="hover:text-[#1055b2] transition-colors">Университеты</a>
             <a href="{{ route('pages.programs') }}" class="hover:text-[#1055b2] transition-colors">Программы</a>
