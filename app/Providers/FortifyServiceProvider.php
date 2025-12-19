@@ -23,21 +23,21 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
+        $this->app->instance(
+            \Laravel\Fortify\Contracts\LogoutResponse::class,
+            new class implements \Laravel\Fortify\Contracts\LogoutResponse {
             public function toResponse($request)
             {
                 if ($request->expectsJson()) {
                     return response()->json(['message' => 'Logged out successfully']);
                 }
 
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                Auth::logout();
-
-                return redirect('/?logout=' . time());
+                return redirect()->route('pages.home');
             }
-        });
+            }
+        );
     }
+
 
     public function boot(): void
     {
@@ -76,7 +76,9 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        RateLimiter::for('two-factor', fn(Request $request) =>
+        RateLimiter::for(
+            'two-factor',
+            fn(Request $request) =>
             Limit::perMinute(5)->by($request->session()->get('login.id'))
         );
 
@@ -84,7 +86,8 @@ class FortifyServiceProvider extends ServiceProvider
         Event::listen(Login::class, function ($event) {
             $user = $event->user;
 
-            if (request()->expectsJson()) return;
+            if (request()->expectsJson())
+                return;
 
             $route = match ($user->profile_type) {
                 'student' => '/student-dashboard',

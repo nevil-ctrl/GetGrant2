@@ -1,13 +1,17 @@
+// resources/js/widgets.tsx
 import "./bootstrap";
 import React from "react";
 import { createRoot } from "react-dom/client";
-console.log("JS подключен!");
 import { ChatWidget } from "./widgets/ChatWidget";
 import { TimelineWidget } from "./widgets/TimelineWidget";
 import { initPhoneInput } from "./widgets/phoneInput";
 
+
+// Импорт CSS intl-tel-input один раз
+import "intl-tel-input/build/css/intlTelInput.css";
+
 document.addEventListener("DOMContentLoaded", () => {
-    initPhoneInput();
+    initPhoneInput(); // инициализация поля телефона
 
     const widgets: Record<string, React.ComponentType<any>> = {
         chat: ChatWidget,
@@ -29,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        const root = createRoot(el); // создаём root
+        const root = createRoot(el);
         root.render(
             React.createElement(
                 React.StrictMode,

@@ -60,5 +60,5 @@
 @endsection
 
 @push('scripts')
-    @vite('resources/js/widgets.ts')
+    @vite('resources/js/widgets.tsx')
 @endpush

@@ -12,7 +12,7 @@ export default defineConfig({
             input: ["resources/css/app.css", "resources/js/widgets.tsx"],
             refresh: true,
         }),
-        react({ fastRefresh: false }),
+        react(), 
     ],
     resolve: {
         alias: {

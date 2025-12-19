@@ -20,6 +20,6 @@
             "@/*": ["./resources/js/*"]
         }
     },
-    "include": ["resources/js/**/*"],
+    "include": ["resources/js/**/*", "types/**/*"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }
