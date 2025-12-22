@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
         request()->session()->invalidate();
         request()->session()->regenerateToken();
         return response()->json(['success' => true]);
-    });
+    })->name('logout');
 Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::get('/api/user', fn() => response()->json(Auth::user()));
 

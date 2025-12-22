@@ -24,6 +24,7 @@ class User extends Authenticatable implements FilamentUser
         'profile_type',
         'role', // если используешь role отдельно
         'phone', // если сохраняешь телефон
+        'phone_validated',
         'manager_id',
     ];
 

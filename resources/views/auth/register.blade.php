@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация | GetGrant</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}">
+    <script src="/js/utils.js"></script>
     @vite([
         'resources/css/app.css',
         'resources/js/widgets.tsx',
@@ -45,13 +46,13 @@
                 @enderror
             </div>
 
-<div class="relative">
-    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-1">Телефон</label>
-    <input id="phone" type="tel" name="phone" value="{{ old('phone') }}"
-        class="w-full rounded-xl border border-gray-200 px-4 py-2.5 shadow-sm text-gray-900 focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
-        placeholder="(700) 12-34-56">
-    <p id="phone-error" class="mt-1 text-sm text-red-500"></p>
-</div>
+            <div class="relative">
+                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-1">Телефон</label>
+                <input id="phone" type="tel" name="phone" value="{{ old('phone') }}"
+                    class="w-full rounded-xl border border-gray-200 px-4 py-2.5 shadow-sm text-gray-900 focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
+                    placeholder="(700) 12-34-56">
+                <p id="phone-error" class="mt-1 text-sm text-red-500"></p>
+            </div>
 
 
             <!-- Тип профиля -->
