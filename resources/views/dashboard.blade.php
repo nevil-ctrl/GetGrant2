@@ -28,9 +28,13 @@
             </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="inline-flex items-center justify-center rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-600">
-                    Выйти
-                </button>
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" class="text-sm font-semibold text-[#1055b2] hover:text-[#003b8a]">
+        Выйти
+    </button>
+</form>
+
             </form>
         </div>
     </div>

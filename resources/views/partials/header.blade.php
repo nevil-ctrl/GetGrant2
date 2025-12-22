@@ -27,13 +27,11 @@
                     Личный кабинет
                 </a>
 
-                <form method="POST" action="{{ route('logout') }}" class="hidden md:inline-flex">
-                    @csrf
-                    <button type="submit"
-                        class="px-4 py-2 rounded-lg bg-[#1055b2] text-white text-sm font-semibold shadow hover:bg-[#003b8a] transition-colors">
-                        Выйти
-                    </button>
-                </form>
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit">Выйти</button>
+</form>
+
             @else
                 <a href="{{ route('login') }}" class="text-sm font-semibold text-[#1055b2] hover:text-[#003b8a]">
                     Войти

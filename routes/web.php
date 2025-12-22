@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Route;
 // -------------------------------
 // API-хелперы для SPA (оставляем для совместимости)
 // -------------------------------
+    Route::post('/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return response()->json(['success' => true]);
+    });
 Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::get('/api/user', fn() => response()->json(Auth::user()));
 
