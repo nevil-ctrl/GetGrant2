@@ -206,3 +206,7 @@ export function initPhoneInput() {
         });
     }
 }
+// Инициализация при загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+    initPhoneInput();
+});
