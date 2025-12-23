@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Country;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UniversityFactory extends Factory
 {
@@ -12,10 +12,10 @@ class UniversityFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company() . ' University',
+            'name' => $this->faker->company().' University',
             'country_id' => Country::factory(), // создаст новую страну автоматически
             'description' => $this->faker->paragraph(),
-            'logo' => 'https://picsum.photos/seed/logo' . $this->faker->unique()->numberBetween(1, 1000) . '/200/200',
+            'logo' => 'https://picsum.photos/seed/logo'.$this->faker->unique()->numberBetween(1, 1000).'/200/200',
             'website' => $this->faker->url(),
             'cost_min' => $this->faker->numberBetween(5000, 15000),
             'cost_max' => $this->faker->numberBetween(15001, 40000),
@@ -32,4 +32,3 @@ class UniversityFactory extends Factory
         ];
     }
 }
-

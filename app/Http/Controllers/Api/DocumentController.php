@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Document;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
@@ -24,7 +24,8 @@ class DocumentController extends Controller
 
         // Добавляем file_url для доступа через браузер
         $documents->transform(function ($doc) {
-            $doc->file_url = $doc->file_path ? asset('storage/' . $doc->file_path) : null;
+            $doc->file_url = $doc->file_path ? asset('storage/'.$doc->file_path) : null;
+
             return $doc;
         });
 
@@ -58,11 +59,11 @@ class DocumentController extends Controller
         ]);
 
         // Добавляем публичный URL
-        $document->file_url = asset('storage/' . $document->file_path);
+        $document->file_url = asset('storage/'.$document->file_path);
         dd($request->all(), $request->file('file_path'));
 
         return response()->json($document, 201);
-        
+
     }
 
     /**
@@ -71,7 +72,8 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::findOrFail($id);
-        $document->file_url = $document->file_path ? asset('storage/' . $document->file_path) : null;
+        $document->file_url = $document->file_path ? asset('storage/'.$document->file_path) : null;
+
         return response()->json($document);
     }
 
@@ -104,7 +106,7 @@ class DocumentController extends Controller
         // Обновление остальных полей
         $document->update($request->only(['name', 'type', 'description', 'is_active']));
 
-        $document->file_url = $document->file_path ? asset('storage/' . $document->file_path) : null;
+        $document->file_url = $document->file_path ? asset('storage/'.$document->file_path) : null;
 
         return response()->json($document);
     }

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\ApplicationStep;
 use App\Models\Application;
+use App\Models\ApplicationStep;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ApplicationStepFactory extends Factory

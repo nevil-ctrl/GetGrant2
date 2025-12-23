@@ -76,7 +76,7 @@ class PageController extends Controller
         }
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->get('search') . '%');
+            $query->where('name', 'like', '%'.$request->get('search').'%');
         }
 
         $universities = $query->orderBy('name')->paginate(12);
@@ -119,7 +119,7 @@ class PageController extends Controller
         }
 
         if ($request->filled('field')) {
-            $query->where('field_of_study', 'like', '%' . $request->get('field') . '%');
+            $query->where('field_of_study', 'like', '%'.$request->get('field').'%');
         }
 
         $programs = $query->paginate(12);
@@ -130,6 +130,7 @@ class PageController extends Controller
     public function program(Program $program)
     {
         $program->load(['university.country']);
+
         return view('pages.programs.show', compact('program'));
     }
 
@@ -138,4 +139,3 @@ class PageController extends Controller
         return view('pages.online-prep');
     }
 }
-

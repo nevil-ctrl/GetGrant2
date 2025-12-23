@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Manager;
-use App\Models\Lead;
 use App\Models\Application;
 use App\Models\ApplicationStep;
 use App\Models\Course;
-use App\Models\Lesson;
 use App\Models\Document;
-use App\Models\UserDocument;
+use App\Models\Lead;
+use App\Models\Lesson;
+use App\Models\Manager;
 use App\Models\Message;
+use App\Models\User;
+use App\Models\UserDocument;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
                 UserDocument::factory(1)->create([
                     'user_id' => $user->id,
                     'application_id' => Application::factory()->create([
-                        'user_id' => $user->id
+                        'user_id' => $user->id,
                     ])->id,
                     'type' => $doc->type,
                     'file_path' => $doc->file_path,
@@ -81,12 +81,12 @@ class DatabaseSeeder extends Seeder
         // --- Создаем приложения и шаги ---
         foreach ($users as $user) {
             $applications = Application::factory(rand(1, 2))->create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             foreach ($applications as $app) {
                 ApplicationStep::factory(rand(2, 4))->create([
-                    'application_id' => $app->id
+                    'application_id' => $app->id,
                 ]);
             }
         }

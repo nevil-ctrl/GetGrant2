@@ -14,6 +14,7 @@ class ApplicationController extends Controller
     public function index()
     {
         $applications = Application::all();
+
         return response()->json($applications, 200);
     }
 
@@ -69,6 +70,7 @@ class ApplicationController extends Controller
     public function destroy(Application $application)
     {
         $application->delete();
+
         return response()->json(null, 204);
     }
 }

@@ -6,18 +6,17 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Auth\Events\Login;
+use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -25,19 +24,19 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $this->app->instance(
             \Laravel\Fortify\Contracts\LogoutResponse::class,
-            new class implements \Laravel\Fortify\Contracts\LogoutResponse {
-            public function toResponse($request)
+            new class implements \Laravel\Fortify\Contracts\LogoutResponse
             {
-                if ($request->expectsJson()) {
-                    return response()->json(['message' => 'Logged out successfully']);
-                }
+                public function toResponse($request)
+                {
+                    if ($request->expectsJson()) {
+                        return response()->json(['message' => 'Logged out successfully']);
+                    }
 
-                return redirect()->route('pages.home');
-            }
+                    return redirect()->route('pages.home');
+                }
             }
         );
     }
-
 
     public function boot(): void
     {
@@ -45,11 +44,11 @@ class FortifyServiceProvider extends ServiceProvider
         // ✅ Только Fortify
 
         // Views
-        Fortify::loginView(fn() => view('auth.login'));
-        Fortify::registerView(fn() => view('auth.register'));
-        Fortify::requestPasswordResetLinkView(fn() => view('auth.forgot-password'));
-        Fortify::resetPasswordView(fn($request) => view('auth.reset-password', ['request' => $request]));
-        Fortify::verifyEmailView(fn() => view('auth.verify-email'));
+        Fortify::loginView(fn () => view('auth.login'));
+        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
+        Fortify::resetPasswordView(fn ($request) => view('auth.reset-password', ['request' => $request]));
+        Fortify::verifyEmailView(fn () => view('auth.verify-email'));
 
         // Actions
         Fortify::createUsersUsing(CreateNewUser::class);
@@ -64,6 +63,7 @@ class FortifyServiceProvider extends ServiceProvider
 
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
+
                 return $user;
             }
 
@@ -72,22 +72,23 @@ class FortifyServiceProvider extends ServiceProvider
 
         // Rate limiting
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+
             return Limit::perMinute(5)->by($throttleKey);
         });
 
         RateLimiter::for(
             'two-factor',
-            fn(Request $request) =>
-            Limit::perMinute(5)->by($request->session()->get('login.id'))
+            fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id'))
         );
 
         // Редирект по роли
         Event::listen(Login::class, function ($event) {
             $user = $event->user;
 
-            if (request()->expectsJson())
+            if (request()->expectsJson()) {
                 return;
+            }
 
             $route = match ($user->profile_type) {
                 'student' => '/student-dashboard',

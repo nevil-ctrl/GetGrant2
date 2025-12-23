@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\University;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProgramFactory extends Factory
 {
@@ -19,7 +19,7 @@ class ProgramFactory extends Factory
             'is_top' => $this->faker->boolean(30),
             'career_info' => json_encode([
                 'average_salary' => $this->faker->numberBetween(30000, 120000),
-                'job_growth' => $this->faker->numberBetween(5, 20) . '%',
+                'job_growth' => $this->faker->numberBetween(5, 20).'%',
             ]),
             'is_active' => $this->faker->boolean(90),
         ];

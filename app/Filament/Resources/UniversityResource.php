@@ -3,20 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UniversityResource\Pages;
-use App\Filament\Resources\UniversityResource\RelationManagers;
 use App\Models\University;
-use Filament\Forms;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Select; 
-use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UniversityResource extends Resource
 {

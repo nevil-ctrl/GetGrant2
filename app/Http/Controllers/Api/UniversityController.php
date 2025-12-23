@@ -22,7 +22,7 @@ class UniversityController extends Controller
         }
 
         if ($search = $request->get('search')) {
-            $query->where('name', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%'.$search.'%');
         }
 
         $universities = $query->paginate(20);
@@ -37,17 +37,17 @@ class UniversityController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'name'         => ['required', 'string', 'max:255'],
-            'country_id'   => ['required', 'integer', 'exists:countries,id'],
-            'description'  => ['nullable', 'string'],
-            'logo'         => ['nullable', 'string', 'max:255'],
-            'website'      => ['nullable', 'string', 'max:255'],
-            'cost_min'     => ['nullable', 'numeric', 'min:0'],
-            'cost_max'     => ['nullable', 'numeric', 'min:0'],
+            'name' => ['required', 'string', 'max:255'],
+            'country_id' => ['required', 'integer', 'exists:countries,id'],
+            'description' => ['nullable', 'string'],
+            'logo' => ['nullable', 'string', 'max:255'],
+            'website' => ['nullable', 'string', 'max:255'],
+            'cost_min' => ['nullable', 'numeric', 'min:0'],
+            'cost_max' => ['nullable', 'numeric', 'min:0'],
             'requirements' => ['nullable'], // можно уточнить формат (array/json)
-            'deadlines'    => ['nullable'], // можно уточнить формат (array/json)
-            'level'        => ['nullable', 'string', 'max:50'],
-            'is_active'    => ['sometimes', 'boolean'],
+            'deadlines' => ['nullable'], // можно уточнить формат (array/json)
+            'level' => ['nullable', 'string', 'max:50'],
+            'is_active' => ['sometimes', 'boolean'],
         ]);
 
         $university = University::create($data);
@@ -79,17 +79,17 @@ class UniversityController extends Controller
         $university = University::findOrFail($id);
 
         $data = $request->validate([
-            'name'         => ['sometimes', 'string', 'max:255'],
-            'country_id'   => ['sometimes', 'integer', 'exists:countries,id'],
-            'description'  => ['nullable', 'string'],
-            'logo'         => ['nullable', 'string', 'max:255'],
-            'website'      => ['nullable', 'string', 'max:255'],
-            'cost_min'     => ['nullable', 'numeric', 'min:0'],
-            'cost_max'     => ['nullable', 'numeric', 'min:0'],
+            'name' => ['sometimes', 'string', 'max:255'],
+            'country_id' => ['sometimes', 'integer', 'exists:countries,id'],
+            'description' => ['nullable', 'string'],
+            'logo' => ['nullable', 'string', 'max:255'],
+            'website' => ['nullable', 'string', 'max:255'],
+            'cost_min' => ['nullable', 'numeric', 'min:0'],
+            'cost_max' => ['nullable', 'numeric', 'min:0'],
             'requirements' => ['nullable'],
-            'deadlines'    => ['nullable'],
-            'level'        => ['nullable', 'string', 'max:50'],
-            'is_active'    => ['sometimes', 'boolean'],
+            'deadlines' => ['nullable'],
+            'level' => ['nullable', 'string', 'max:50'],
+            'is_active' => ['sometimes', 'boolean'],
         ]);
 
         $university->update($data);

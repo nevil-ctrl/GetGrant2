@@ -25,7 +25,8 @@ class Country extends Model
         'selling_points' => 'array',
     ];
 
-    public function universities() {
-    return $this->hasMany(University::class);
-}
+    public function universities()
+    {
+        return $this->hasMany(University::class);
+    }
 }

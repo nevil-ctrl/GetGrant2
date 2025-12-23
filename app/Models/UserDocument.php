@@ -30,6 +30,6 @@ class UserDocument extends Model
 
     public function document()
     {
-        return $this->belongsTo(Document::class, 'type', 'type'); 
+        return $this->belongsTo(Document::class, 'type', 'type');
     }
 }

@@ -82,10 +82,10 @@ export function initPhoneInput() {
             console.info("[phone-debug] validationError (instance):", err);
             // eslint-disable-next-line no-console
             console.info("[phone-debug] intl utils validation (if available):", (window as any).intlTelInputUtils?.getValidationError ? (window as any).intlTelInputUtils.getValidationError(0, input.value) : null);
-            try {
+                let nat: string | null = null;
+                    try {
                 // eslint-disable-next-line no-console
                 console.info("[phone-debug] getNumber (E.164):", iti.getNumber());
-                let nat = null;
                 try {
                     // Попытаться получить национальный формат через utils.numberFormat.NATIONAL
                     // @ts-ignore
@@ -106,7 +106,7 @@ export function initPhoneInput() {
 
             // Пишем результат также в видимый блок на странице
             try {
-                const lines = [];
+                const lines: string[] = [];
                 lines.push("value: " + input.value);
                 lines.push("selected: " + JSON.stringify(sel));
                 lines.push("isValid: " + String(isValid));
@@ -142,8 +142,9 @@ export function initPhoneInput() {
         }
     });
 
-    if (input.form) {
-        input.form.addEventListener("submit", (e) => {
+    const form = input.form;
+    if (form) {
+        form.addEventListener("submit", (e) => {
             const isValid = iti.isValidNumber();
             // @ts-ignore
             const err = typeof iti.getValidationError === "function" ? iti.getValidationError() : null;
@@ -159,20 +160,20 @@ export function initPhoneInput() {
                     input.classList.remove("border-red-500");
                     errorEl.textContent = "Предупреждение: номер не подтверждён библиотекой, будет сохранён как есть";
                     // Добавим скрытое поле, чтобы сервер знал, что номер не валидирован полностью
-                    if (!input.form.querySelector("input[name=phone_unvalidated]")) {
+                    if (!form.querySelector("input[name=phone_unvalidated]")) {
                         const hidden = document.createElement("input");
                         hidden.type = "hidden";
                         hidden.name = "phone_unvalidated";
                         hidden.value = "1";
-                        input.form.appendChild(hidden);
+                        form.appendChild(hidden);
                     }
                     // Также передадим страну для сервера
-                    if (!input.form.querySelector("input[name=phone_country]")) {
+                    if (!form.querySelector("input[name=phone_country]")) {
                         const h2 = document.createElement("input");
                         h2.type = "hidden";
                         h2.name = "phone_country";
                         h2.value = sel?.iso2 ?? '';
-                        input.form.appendChild(h2);
+                        form.appendChild(h2);
                     }
                     // Сохраняем число в международном формате если возможно, иначе отправляем как есть
                     try {
@@ -196,12 +197,12 @@ export function initPhoneInput() {
             // ✅ ВАЖНО: сохраняем в международном формате
             input.value = iti.getNumber(); // +996700123456
             // добавляем страну в скрытое поле для серверной попытки нормализации
-            if (!input.form.querySelector("input[name=phone_country]")) {
+            if (!form.querySelector("input[name=phone_country]")) {
                 const h2 = document.createElement("input");
                 h2.type = "hidden";
                 h2.name = "phone_country";
                 h2.value = sel?.iso2 ?? '';
-                input.form.appendChild(h2);
+                form.appendChild(h2);
             }
         });
     }

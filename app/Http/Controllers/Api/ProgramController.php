@@ -43,13 +43,13 @@ class ProgramController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'name'           => ['required', 'string', 'max:255'],
-            'university_id'  => ['required', 'integer', 'exists:universities,id'],
-            'description'    => ['nullable', 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'university_id' => ['required', 'integer', 'exists:universities,id'],
+            'description' => ['nullable', 'string'],
             'field_of_study' => ['nullable', 'string', 'max:255'],
-            'is_top'         => ['sometimes', 'boolean'],
-            'career_info'    => ['nullable'], // можно уточнить формат (array/json)
-            'is_active'      => ['sometimes', 'boolean'],
+            'is_top' => ['sometimes', 'boolean'],
+            'career_info' => ['nullable'], // можно уточнить формат (array/json)
+            'is_active' => ['sometimes', 'boolean'],
         ]);
 
         $program = Program::create($data);
@@ -77,13 +77,13 @@ class ProgramController extends Controller
         $program = Program::findOrFail($id);
 
         $data = $request->validate([
-            'name'           => ['sometimes', 'string', 'max:255'],
-            'university_id'  => ['sometimes', 'integer', 'exists:universities,id'],
-            'description'    => ['nullable', 'string'],
+            'name' => ['sometimes', 'string', 'max:255'],
+            'university_id' => ['sometimes', 'integer', 'exists:universities,id'],
+            'description' => ['nullable', 'string'],
             'field_of_study' => ['nullable', 'string', 'max:255'],
-            'is_top'         => ['sometimes', 'boolean'],
-            'career_info'    => ['nullable'],
-            'is_active'      => ['sometimes', 'boolean'],
+            'is_top' => ['sometimes', 'boolean'],
+            'career_info' => ['nullable'],
+            'is_active' => ['sometimes', 'boolean'],
         ]);
 
         $program->update($data);
@@ -103,4 +103,3 @@ class ProgramController extends Controller
         return response()->json(['message' => 'Program deleted successfully']);
     }
 }
-?>

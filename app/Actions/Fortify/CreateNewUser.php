@@ -24,11 +24,11 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         $phone = $input['phone'] ?? null;
-        $phoneValidated = !empty($phone) && empty($input['phone_unvalidated']);
+        $phoneValidated = ! empty($phone) && empty($input['phone_unvalidated']);
 
         // Попытка нормализовать номер на сервере, если доступна библиотека libphonenumber
         $phoneCountry = $input['phone_country'] ?? null;
-        if (!empty($phone) && class_exists('\libphonenumber\PhoneNumberUtil')) {
+        if (! empty($phone) && class_exists('\libphonenumber\PhoneNumberUtil')) {
             try {
                 $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
                 $proto = $phoneUtil->parse($phone, strtoupper($phoneCountry ?? ''));

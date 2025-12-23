@@ -16,12 +16,12 @@ class LessonController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_id'    => 'required|exists:courses,id',
-            'user_id'      => 'required|exists:users,id',
+            'course_id' => 'required|exists:courses,id',
+            'user_id' => 'required|exists:users,id',
             'scheduled_at' => 'required|date',
-            'duration'     => 'nullable|integer|min:1',
+            'duration' => 'nullable|integer|min:1',
             'meeting_link' => 'nullable|string|max:255',
-            'status'       => 'nullable|in:scheduled,completed,cancelled',
+            'status' => 'nullable|in:scheduled,completed,cancelled',
         ]);
 
         return Lesson::create($validated);
@@ -37,15 +37,16 @@ class LessonController extends Controller
         $lesson = Lesson::findOrFail($id);
 
         $validated = $request->validate([
-            'course_id'    => 'sometimes|exists:courses,id',
-            'user_id'      => 'sometimes|exists:users,id',
+            'course_id' => 'sometimes|exists:courses,id',
+            'user_id' => 'sometimes|exists:users,id',
             'scheduled_at' => 'sometimes|date',
-            'duration'     => 'nullable|integer|min:1',
+            'duration' => 'nullable|integer|min:1',
             'meeting_link' => 'nullable|string|max:255',
-            'status'       => 'nullable|in:scheduled,completed,cancelled',
+            'status' => 'nullable|in:scheduled,completed,cancelled',
         ]);
 
         $lesson->update($validated);
+
         return $lesson;
     }
 

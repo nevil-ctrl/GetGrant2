@@ -16,6 +16,7 @@ class UserDocumentController extends Controller
     {
         $documents = UserDocument::with(['user', 'document'])->get()->map(function ($doc) {
             $doc->file_url = $doc->file_path ? Storage::disk('public')->url($doc->file_path) : null;
+
             return $doc;
         });
 

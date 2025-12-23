@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Application;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Application;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MessageFactory extends Factory

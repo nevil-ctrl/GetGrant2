@@ -72,13 +72,14 @@ class DashboardController extends Controller
     public function parent(Request $request)
     {
         $user = $request->user()->load('manager');
+
         return view('dashboards.parent', compact('user'));
     }
 
     public function manager(Request $request)
     {
         $user = $request->user();
+
         return view('dashboards.manager', compact('user'));
     }
 }
-

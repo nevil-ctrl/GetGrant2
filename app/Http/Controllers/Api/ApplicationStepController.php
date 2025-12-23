@@ -17,10 +17,10 @@ class ApplicationStepController extends Controller
     {
         $validated = $request->validate([
             'application_id' => 'required|exists:applications,id',
-            'title'          => 'required|string|max:255',
-            'description'    => 'nullable|string',
-            'status'         => 'nullable|in:pending,completed',
-            'completed_at'   => 'nullable|date',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'nullable|in:pending,completed',
+            'completed_at' => 'nullable|date',
         ]);
 
         return ApplicationStep::create($validated);
@@ -37,13 +37,14 @@ class ApplicationStepController extends Controller
 
         $validated = $request->validate([
             'application_id' => 'sometimes|exists:applications,id',
-            'title'          => 'sometimes|string|max:255',
-            'description'    => 'nullable|string',
-            'status'         => 'nullable|in:pending,completed',
-            'completed_at'   => 'nullable|date',
+            'title' => 'sometimes|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'nullable|in:pending,completed',
+            'completed_at' => 'nullable|date',
         ]);
 
         $step->update($validated);
+
         return $step;
     }
 

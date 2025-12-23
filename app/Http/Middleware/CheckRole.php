@@ -11,15 +11,13 @@ class CheckRole
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @param  string  $role
      * @return mixed
      */
     public function handle(Request $request, Closure $next, $role)
     {
         // Если пользователь не авторизован или роль не совпадает
-        if (!Auth::check() || Auth::user()->role !== $role) {
+        if (! Auth::check() || Auth::user()->role !== $role) {
             abort(403, 'Доступ запрещён');
         }
 

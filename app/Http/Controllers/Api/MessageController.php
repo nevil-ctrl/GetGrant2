@@ -16,10 +16,10 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'sender_id'      => 'required|exists:users,id',
-            'receiver_id'    => 'required|exists:users,id',
+            'sender_id' => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
             'application_id' => 'nullable|exists:applications,id',
-            'message'        => 'required|string',
+            'message' => 'required|string',
         ]);
 
         return Message::create($validated);
@@ -35,13 +35,14 @@ class MessageController extends Controller
         $message = Message::findOrFail($id);
 
         $validated = $request->validate([
-            'sender_id'      => 'sometimes|exists:users,id',
-            'receiver_id'    => 'sometimes|exists:users,id',
+            'sender_id' => 'sometimes|exists:users,id',
+            'receiver_id' => 'sometimes|exists:users,id',
             'application_id' => 'nullable|exists:applications,id',
-            'message'        => 'sometimes|string',
+            'message' => 'sometimes|string',
         ]);
 
         $message->update($validated);
+
         return $message;
     }
 

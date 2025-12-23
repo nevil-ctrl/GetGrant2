@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\UserDocument;
-use App\Models\User;
 use App\Models\Application;
-use App\Models\Document;
+use App\Models\User;
+use App\Models\UserDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserDocumentFactory extends Factory
@@ -18,7 +17,7 @@ class UserDocumentFactory extends Factory
             'user_id' => User::factory(),
             'application_id' => Application::factory(),
             'type' => $this->faker->randomElement(['license', 'certificate', 'other']),
-            'file_path' => 'user_documents/' . $this->faker->uuid() . '.pdf',
+            'file_path' => 'user_documents/'.$this->faker->uuid().'.pdf',
             'status' => $this->faker->randomElement(['waiting', 'approved', 'rejected']),
             'comment' => $this->faker->sentence(),
         ];

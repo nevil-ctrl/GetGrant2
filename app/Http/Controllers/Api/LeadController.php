@@ -16,11 +16,11 @@ class LeadController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id'    => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id',
             'manager_id' => 'nullable|exists:users,id',
-            'status'     => 'nullable|in:new,contacted,consultation,closed',
-            'source'     => 'nullable|string',
-            'notes'      => 'nullable|string',
+            'status' => 'nullable|in:new,contacted,consultation,closed',
+            'source' => 'nullable|string',
+            'notes' => 'nullable|string',
         ]);
 
         return Lead::create($validated);
@@ -36,14 +36,15 @@ class LeadController extends Controller
         $lead = Lead::findOrFail($id);
 
         $validated = $request->validate([
-            'user_id'    => 'sometimes|exists:users,id',
+            'user_id' => 'sometimes|exists:users,id',
             'manager_id' => 'sometimes|exists:users,id',
-            'status'     => 'nullable|in:new,contacted,consultation,closed',
-            'source'     => 'nullable|string',
-            'notes'      => 'nullable|string',
+            'status' => 'nullable|in:new,contacted,consultation,closed',
+            'source' => 'nullable|string',
+            'notes' => 'nullable|string',
         ]);
 
         $lead->update($validated);
+
         return $lead;
     }
 

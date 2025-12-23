@@ -19,7 +19,7 @@ class CountriesSeeder extends Seeder
                     'Bachelor: 4 years, Master: 1–2 years',
                     'Strong research and innovation ecosystem',
                     'Internships and capstone projects',
-                    'Top global university rankings'
+                    'Top global university rankings',
                 ]),
                 'image' => 'countries/us.jpg',
                 'is_active' => true,
@@ -33,7 +33,7 @@ class CountriesSeeder extends Seeder
                     'Bachelor: 3 years (4 in Scotland)',
                     'Master: 1 intensive year',
                     'Specialization from first year',
-                    'Russell Group universities'
+                    'Russell Group universities',
                 ]),
                 'image' => 'countries/uk.jpg',
                 'is_active' => true,
@@ -47,7 +47,7 @@ class CountriesSeeder extends Seeder
                     'Low or no tuition fees',
                     'ECTS credit system',
                     'Wide student mobility',
-                    'Cultural diversity'
+                    'Cultural diversity',
                 ]),
                 'image' => 'countries/eu.jpg',
                 'is_active' => true,
@@ -61,7 +61,7 @@ class CountriesSeeder extends Seeder
                     'Bachelor: 3–4 years',
                     'Master: 1–2 years',
                     'Co-op programs (study + work)',
-                    'High quality of life'
+                    'High quality of life',
                 ]),
                 'image' => 'countries/ca.jpg',
                 'is_active' => true,
@@ -75,7 +75,7 @@ class CountriesSeeder extends Seeder
                     'Bachelor: 3 years',
                     'Master: 1–2 years',
                     'Part-time work allowed',
-                    'Globally ranked universities'
+                    'Globally ranked universities',
                 ]),
                 'image' => 'countries/au_nz.jpg',
                 'is_active' => true,
@@ -89,7 +89,7 @@ class CountriesSeeder extends Seeder
                     'Top universities (Tsinghua, Peking)',
                     'English-taught programs',
                     'CSC scholarships',
-                    'Strong tech and research focus'
+                    'Strong tech and research focus',
                 ]),
                 'image' => 'countries/cn.jpg',
                 'is_active' => true,
@@ -103,7 +103,7 @@ class CountriesSeeder extends Seeder
                     'High-tech infrastructure',
                     'Strong IT and engineering programs',
                     'English-taught courses available',
-                    'Global companies and innovation'
+                    'Global companies and innovation',
                 ]),
                 'image' => 'countries/kr.jpg',
                 'is_active' => true,
@@ -117,7 +117,7 @@ class CountriesSeeder extends Seeder
                     'Top universities (Tokyo, Kyoto)',
                     'English-taught master’s programs',
                     'MEXT scholarships',
-                    'Strong technology sector'
+                    'Strong technology sector',
                 ]),
                 'image' => 'countries/jp.jpg',
                 'is_active' => true,
@@ -131,7 +131,7 @@ class CountriesSeeder extends Seeder
                     'English used in daily life',
                     'Top-ranked universities (NUS, NTU)',
                     'Affordable options in Malaysia',
-                    'International branch campuses'
+                    'International branch campuses',
                 ]),
                 'image' => 'countries/my_sg.jpg',
                 'is_active' => true,
@@ -145,7 +145,7 @@ class CountriesSeeder extends Seeder
                     'Western diplomas in the Middle East',
                     'English-taught programs',
                     'High safety and living standards',
-                    'Modern campuses'
+                    'Modern campuses',
                 ]),
                 'image' => 'countries/ae_qa.jpg',
                 'is_active' => true,

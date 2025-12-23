@@ -27,13 +27,13 @@ class AuthController extends Controller
         // Определяем роль и profile_type синхронно
         $profileType = $validated['profile_type'] ?? 'student';
         $role = $profileType; // role всегда равен profile_type для обычных пользователей
-        
+
         $phone = $validated['phone'] ?? null;
-        $phoneValidated = !empty($phone) && empty($validated['phone_unvalidated']);
+        $phoneValidated = ! empty($phone) && empty($validated['phone_unvalidated']);
 
         // Серверная попытка нормализации через libphonenumber (если доступна) — помечаем номер валидным, если парсинг прошёл
         $phoneCountry = $validated['phone_country'] ?? null;
-        if (!empty($phone) && class_exists('\libphonenumber\PhoneNumberUtil')) {
+        if (! empty($phone) && class_exists('\libphonenumber\PhoneNumberUtil')) {
             try {
                 $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
                 $proto = $phoneUtil->parse($phone, strtoupper($phoneCountry ?? ''));

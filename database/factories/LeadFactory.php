@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Lead;
-use App\Models\User;
 use App\Models\Manager;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LeadFactory extends Factory
