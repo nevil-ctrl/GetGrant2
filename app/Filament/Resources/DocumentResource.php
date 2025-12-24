@@ -19,7 +19,29 @@ class DocumentResource extends Resource
     {
         return $form
             ->schema([
-                //
+                \Filament\Forms\Components\TextInput::make('name')
+                    ->label('Name')
+                    ->required()
+                    ->maxLength(255),
+
+                \Filament\Forms\Components\TextInput::make('type')
+                    ->label('Type')
+                    ->required()
+                    ->maxLength(255),
+
+                \Filament\Forms\Components\FileUpload::make('file_path')
+                    ->label('File')
+                    ->disk('public')
+                    ->directory('documents')
+                    ->required(),
+
+                \Filament\Forms\Components\Textarea::make('description')
+                    ->label('Description')
+                    ->rows(3),
+
+                \Filament\Forms\Components\Toggle::make('is_active')
+                    ->label('Active')
+                    ->default(true),
             ]);
     }
 
