@@ -34,3 +34,33 @@ Thumbs.db
 # Docker / PostgreSQL
 docker/postgres/*
 !docker/postgres/.gitkeep
+
+# Misc local / cache / temp files 🔧
+# Node/npm debug logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local environment overrides
+.env.local
+.env.*.local
+
+# Temp files and caches
+*.tmp
+*.temp
+.vite/
+.vite-temp/
+.cache/
+
+# Coverage and test output
+coverage/
+.nyc_output/
+
+# IDE / editors
+/.phpstorm.meta.php
+/.idea
+/.vscode
+
+# Other caches
+.sass-cache
+
