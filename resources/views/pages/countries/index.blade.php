@@ -10,7 +10,25 @@
             </div>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <form method="GET" class="flex flex-wrap gap-3 p-4 bg-white rounded-xl border border-border/60">
+            <input name="search" value="{{ request('search') }}" placeholder="Поиск по названию страны или коду"
+                   class="px-4 py-2 rounded-lg border border-border text-sm flex-1 min-w-[200px]" />
+            <button type="submit" class="px-4 py-2 rounded-lg bg-[#1055b2] text-white text-sm font-semibold hover:bg-[#003b8a] transition-colors">
+                Найти
+            </button>
+            @if(request()->has('search'))
+                <a href="{{ route('pages.countries') }}" class="px-4 py-2 rounded-lg border border-border text-sm text-[#6D7A89] hover:bg-gray-50 transition-colors">
+                    Сбросить
+                </a>
+            @endif
+        </form>
+
+        @if($countries->isEmpty())
+            <div class="text-center py-12 bg-white rounded-2xl border border-border/60">
+                <p class="text-[#6D7A89]">Страны не найдены</p>
+            </div>
+        @else
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($countries as $country)
                 <article class="p-6 bg-white rounded-2xl border border-border/60 shadow-sm space-y-3">
                     <div class="flex items-center gap-3">
@@ -40,7 +58,7 @@
                         </ul>
                     @endif
                     <div class="text-xs text-[#6D7A89]">Университетов: {{ $country->universities_count ?? 0 }}</div>
-                    <a href="{{ route('pages.countries.show', $country) }}"
+                    <a href="{{ route('pages.countries.show', $country->code) }}"
                        class="inline-flex justify-center w-full px-4 py-2.5 rounded-lg bg-[#1055b2] text-white text-sm font-semibold hover:bg-[#003b8a] transition-colors">
                         Подробнее
                     </a>
@@ -48,9 +66,15 @@
             @endforeach
         </div>
 
-        <div class="mt-8">
-            {{ $countries->links() }}
-        </div>
+        @if($countries->isEmpty())
+            <div class="text-center py-12">
+                <p class="text-[#6D7A89]">Страны не найдены</p>
+            </div>
+        @else
+            <div class="mt-8">
+                {{ $countries->appends(request()->query())->links() }}
+            </div>
+        @endif
     </section>
 @endsection
 

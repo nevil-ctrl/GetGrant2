@@ -38,7 +38,15 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Отключаем FilamentInfoWidget для ускорения загрузки
+            ])
+            ->spa() // Включаем SPA режим для быстрой навигации
+            ->maxContentWidth('full') // Полная ширина контента
+            ->sidebarCollapsibleOnDesktop() // Сворачиваемая боковая панель
+            ->navigationGroups([
+                'Управление контентом',
+                'Пользователи',
+                'LMS',
             ])
             ->middleware([
                 EncryptCookies::class,

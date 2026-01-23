@@ -18,20 +18,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // --- Создаем админа (если не существует) ---
-        User::firstOrCreate(
-            ['email' => 'admin@getgrant.com'],
-            [
-                'name' => 'Администратор',
-                'password' => \Hash::make('admin123'),
-                'role' => 'admin',
-                'profile_type' => 'student', // для совместимости
-                'email_verified_at' => now(),
-            ]
-        );
-
-        // --- Создаем менеджеров ---
-        Manager::factory(3)->create();
+        // --- Создаем админа и менеджеров через сидер ---
+        $this->call(AdminSeeder::class);
 
         // --- Создаем пользователей (студенты + родители) ---
         $users = User::factory(10)->create();

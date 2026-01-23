@@ -14,10 +14,21 @@ class CheckRole
      * @param  string  $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Если пользователь не авторизован или роль не совпадает
-        if (! Auth::check() || Auth::user()->role !== $role) {
+        if (! Auth::check()) {
+            abort(403, 'Доступ запрещён');
+        }
+
+        $userRole = Auth::user()->role;
+        
+        // Если передано несколько ролей через запятую (например, 'teacher,admin')
+        $allowedRoles = [];
+        foreach ($roles as $role) {
+            $allowedRoles = array_merge($allowedRoles, explode(',', $role));
+        }
+        
+        if (! in_array($userRole, $allowedRoles)) {
             abort(403, 'Доступ запрещён');
         }
 

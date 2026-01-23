@@ -15,8 +15,11 @@ class Country extends Model
         'code',
         'flag',
         'description',
+        'description_ru',
+        'description_en',
         'is_active',
-        'selling_points', // если храните как JSON
+        'selling_points',
+        'image',
     ];
 
     // Если selling_points хранится как JSON

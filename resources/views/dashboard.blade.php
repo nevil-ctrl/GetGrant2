@@ -27,15 +27,11 @@
                 Adminka
             </a>
             <form method="POST" action="{{ route('logout') }}">
-                @csrf
-<form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button type="submit" class="text-sm font-semibold text-[#1055b2] hover:text-[#003b8a]">
-        Выйти
-    </button>
-</form>
-
-            </form>
+            @csrf
+            <button type="submit" class="text-red-500 hover:text-red-600 font-semibold">
+                Выйти
+            </button>
+        </form>
         </div>
     </div>
 </header>

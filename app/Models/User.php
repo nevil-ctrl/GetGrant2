@@ -21,10 +21,9 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'profile_type',
-        'role', // если используешь role отдельно
-        'phone', // если сохраняешь телефон
-        'phone_validated',
+        'role',
         'manager_id',
+        'student_id', // Для родителей: связь с их ребенком
     ];
 
     protected $hidden = [
@@ -58,5 +57,62 @@ class User extends Authenticatable implements FilamentUser
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class);
+    }
+
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
+    public function createdLessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class, 'user_id');
+    }
+
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'student_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'student_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(self::class, 'student_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role === 'manager';
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role === 'student';
+    }
+
+    public function isParent(): bool
+    {
+        return $this->role === 'parent';
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function enrolledLessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'enrollments')
+            ->withPivot('status')
+            ->withTimestamps();
     }
 }

@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UniversityResource\Pages;
 use App\Models\University;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,40 +24,79 @@ class UniversityResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('University Name')
-                    ->required(),
+                Section::make('Основная информация')
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Название университета')
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpan(2),
 
-                Select::make('country_id')
-                    ->label('Country')
-                    ->relationship('country', 'name')
-                    ->required(),
+                        Select::make('country_id')
+                            ->label('Страна')
+                            ->relationship('country', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
 
-                Textarea::make('description')->label('Description')->nullable(),
+                        Select::make('level')
+                            ->label('Уровень обучения')
+                            ->options([
+                                'bachelor' => 'Бакалавриат',
+                                'master' => 'Магистратура',
+                                'phd' => 'PhD',
+                                'all' => 'Все уровни',
+                            ])
+                            ->default('all')
+                            ->required(),
 
-                TextInput::make('logo')->label('Logo URL')->nullable(),
-                TextInput::make('website')->label('Website')->nullable(),
-
-                TextInput::make('cost_min')->label('Min Cost')->numeric()->nullable(),
-                TextInput::make('cost_max')->label('Max Cost')->numeric()->nullable(),
-
-                Select::make('level')
-
-                    ->options([
-                        'bachelor' => 'Bachelor',
-                        'master' => 'Master',
-                        'phd' => 'PhD',
-                        'all' => 'All',
+                        Textarea::make('description')
+                            ->label('Описание')
+                            ->nullable()
+                            ->rows(4)
+                            ->columnSpanFull(),
                     ])
-                    ->default('all'),
+                    ->columns(2),
 
-                Select::make('is_active')
-                    ->label('Active')
-                    ->options([
-                        1 => 'Yes',
-                        0 => 'No',
+                Section::make('Контакты и ссылки')
+                    ->schema([
+                        TextInput::make('logo')
+                            ->label('Логотип (URL)')
+                            ->url()
+                            ->nullable()
+                            ->columnSpan(1),
+
+                        TextInput::make('website')
+                            ->label('Веб-сайт')
+                            ->url()
+                            ->nullable()
+                            ->columnSpan(1),
                     ])
-                    ->default(1),
+                    ->columns(2),
+
+                Section::make('Стоимость обучения')
+                    ->schema([
+                        TextInput::make('cost_min')
+                            ->label('Минимальная стоимость ($)')
+                            ->numeric()
+                            ->nullable()
+                            ->columnSpan(1),
+
+                        TextInput::make('cost_max')
+                            ->label('Максимальная стоимость ($)')
+                            ->numeric()
+                            ->nullable()
+                            ->columnSpan(1),
+                    ])
+                    ->columns(2),
+
+                Section::make('Настройки')
+                    ->schema([
+                        Toggle::make('is_active')
+                            ->label('Активен')
+                            ->default(true)
+                            ->helperText('Неактивные университеты не отображаются на сайте'),
+                    ]),
             ]);
     }
 
@@ -63,7 +104,20 @@ class UniversityResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Название')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('country.name')
+                    ->label('Страна')
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Активен')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Создано')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -75,7 +129,9 @@ class UniversityResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->paginated([10, 25, 50, 100]); // Пагинация для производительности
     }
 
     public static function getRelations(): array

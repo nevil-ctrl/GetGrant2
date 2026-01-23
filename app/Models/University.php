@@ -16,6 +16,7 @@ class University extends Model
         'name',
         'description',
         'logo',
+        'image',
         'website',
         'level',
         'cost_min',

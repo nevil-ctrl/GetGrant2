@@ -47,6 +47,23 @@ services:
     networks:
       - getgrant2_network
 
+  redis:
+    image: redis:7-alpine
+    container_name: getgrant2_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    command: redis-server --appendonly yes
+    networks:
+      - getgrant2_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   node:
     image: node:22
     container_name: getgrant2_node
@@ -65,3 +82,4 @@ networks:
 
 volumes:
   pgdata2:
+  redisdata:

@@ -6,49 +6,63 @@ use App\Models\Country;
 use App\Models\Program;
 use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PageController extends Controller
 {
     public function home()
     {
-        $popularCountries = Country::query()
+        // Выводим все активные страны
+        $countries = Cache::remember('home_countries', 3600, function () {
+            return Country::query()
             ->where('is_active', true)
             ->orderBy('name')
-            ->take(6)
             ->get();
+        });
 
-        $popularPrograms = Program::query()
+        $popularPrograms = Cache::remember('home_popular_programs', 3600, function () {
+            return Program::query()
             ->where('is_active', true)
             ->with('university')
             ->orderByDesc('is_top')
             ->orderBy('name')
             ->take(6)
             ->get();
+        });
 
-        $partnerUniversities = University::query()
+        $partnerUniversities = Cache::remember('home_partner_universities', 3600, function () {
+            return University::query()
             ->where('is_active', true)
             ->with('country')
             ->withCount('programs')
             ->orderBy('name')
             ->take(8)
             ->get();
+        });
 
-        return view('pages.home', compact('popularCountries', 'popularPrograms', 'partnerUniversities'));
+        return view('pages.home', compact('countries', 'popularPrograms', 'partnerUniversities'));
     }
 
-    public function countries()
+    public function countries(Request $request)
     {
-        $countries = Country::query()
+        $query = Country::query()
             ->where('is_active', true)
-            ->withCount('universities')
-            ->orderBy('name')
-            ->paginate(12);
+            ->withCount('universities');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->get('search') . '%')
+                ->orWhere('code', 'like', '%' . $request->get('search') . '%');
+        }
+
+        $countries = $query->orderBy('name')->paginate(12);
 
         return view('pages.countries.index', compact('countries'));
     }
 
-    public function country(Country $country)
+    public function country($code)
     {
+        $country = Country::where('code', $code)->where('is_active', true)->firstOrFail();
+        
         $universities = $country->universities()
             ->where('is_active', true)
             ->withCount('programs')

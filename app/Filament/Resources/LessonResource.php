@@ -27,10 +27,31 @@ class LessonResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Название')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('course.name')
+                    ->label('Курс')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Категория')
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->label('Опубликован')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Создано')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('is_published')
+                    ->label('Опубликован')
+                    ->options([
+                        1 => 'Да',
+                        0 => 'Нет',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -39,7 +60,9 @@ class LessonResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->paginated([10, 25, 50, 100]); // Пагинация для производительности
     }
 
     public static function getRelations(): array

@@ -96,40 +96,54 @@
     <section class="container-custom py-16 space-y-8">
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div>
-                <p class="text-sm font-semibold text-[#6D7A89] uppercase tracking-wide">Топ страны</p>
-                <h2 class="text-3xl font-bold text-[#1A1A1A]">Популярные направления</h2>
+                <p class="text-sm font-semibold text-[#6D7A89] uppercase tracking-wide">Страны</p>
+                <h2 class="text-3xl font-bold text-[#1A1A1A]">Куда можно поступить</h2>
             </div>
             <a class="text-sm font-semibold text-[#1055b2] hover:text-[#003b8a]" href="{{ route('pages.countries') }}">Смотреть все</a>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($popularCountries as $country)
-                <article class="p-6 bg-white rounded-2xl border border-border/60 shadow-sm space-y-3">
-                    <div class="flex items-center gap-3">
-                        <div class="text-3xl">{{ $country->flag }}</div>
-                        <div>
-                            <div class="text-xl font-semibold text-[#1A1A1A]">{{ $country->name }}</div>
-                            <div class="text-sm text-[#6D7A89]">{{ $country->description }}</div>
+        @if($countries->count() > 0)
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($countries as $country)
+                    <article class="p-6 bg-white rounded-2xl border border-border/60 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-start gap-3">
+                            <div class="text-4xl flex-shrink-0">{{ $country->flag ?? '🌍' }}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xl font-semibold text-[#1A1A1A] mb-2">{{ $country->name }}</div>
+                                @if($country->description_ru)
+                                    <div class="text-sm text-[#6D7A89] leading-relaxed line-clamp-4">{{ \Illuminate\Support\Str::limit($country->description_ru, 150) }}</div>
+                                @elseif($country->description)
+                                    <div class="text-sm text-[#6D7A89] line-clamp-3">{{ $country->description }}</div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                    @php
-                        $points = $country->selling_points;
-                        if (! is_array($points)) {
-                            $decoded = json_decode((string) $points, true);
-                            $points = is_array($decoded) ? $decoded : [];
-                        }
-                    @endphp
-                    @if(!empty($points))
-                        <ul class="space-y-2">
-                            @foreach($points as $point)
-                                <li class="text-sm text-[#1A1A1A] flex gap-2">
-                                    <span class="text-[#1055b2]">•</span> {{ $point }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </article>
-            @endforeach
-        </div>
+                        @php
+                            $points = $country->selling_points;
+                            if (! is_array($points)) {
+                                $decoded = json_decode((string) $points, true);
+                                $points = is_array($decoded) ? $decoded : [];
+                            }
+                        @endphp
+                        @if(!empty($points))
+                            <ul class="space-y-2 pt-2 border-t border-border/30">
+                                @foreach(array_slice($points, 0, 3) as $point)
+                                    <li class="text-sm text-[#1A1A1A] flex gap-2">
+                                        <span class="text-[#1055b2] font-bold flex-shrink-0">•</span> 
+                                        <span>{{ is_array($point) ? ($point['value'] ?? '') : $point }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <a href="{{ route('pages.countries.show', $country->code) }}" class="inline-block text-sm font-semibold text-[#1055b2] hover:text-[#003b8a] transition-colors">
+                            Подробнее →
+                        </a>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-12 bg-white rounded-2xl border border-border/60">
+                <p class="text-[#6D7A89]">Страны будут добавлены в ближайшее время</p>
+            </div>
+        @endif
     </section>
 
     <section class="container-custom py-16 space-y-8">
@@ -169,14 +183,26 @@
             </div>
             <a class="text-sm font-semibold text-[#1055b2] hover:text-[#003b8a]" href="{{ route('pages.universities') }}">Смотреть все</a>
         </div>
-        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-            @foreach($partnerUniversities as $uni)
-                <div class="p-4 bg-white rounded-xl border border-border/60 shadow-sm">
-                    <div class="text-sm text-[#6D7A89] mb-1">{{ $uni->country?->name }}</div>
-                    <div class="font-semibold text-[#1A1A1A]">{{ $uni->name }}</div>
-                </div>
-            @endforeach
-        </div>
+        @if($partnerUniversities->count() > 0)
+            <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach($partnerUniversities as $uni)
+                    <div class="p-4 bg-white rounded-xl border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-xs text-[#6D7A89] uppercase tracking-wide mb-1">{{ $uni->country?->name ?? '—' }}</div>
+                        <div class="font-semibold text-[#1A1A1A] mb-2 line-clamp-2">{{ $uni->name }}</div>
+                        @if($uni->programs_count > 0)
+                            <div class="text-xs text-[#6D7A89]">{{ $uni->programs_count }} {{ $uni->programs_count == 1 ? 'программа' : 'программ' }}</div>
+                        @endif
+                        <a href="{{ route('pages.universities.show', $uni) }}" class="inline-block mt-2 text-xs font-semibold text-[#1055b2] hover:text-[#003b8a]">
+                            Подробнее →
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-12 bg-white rounded-2xl border border-border/60">
+                <p class="text-[#6D7A89]">Университеты будут добавлены в ближайшее время</p>
+            </div>
+        @endif
     </section>
 
     <section id="cta" class="bg-[#1055b2] text-white py-16">

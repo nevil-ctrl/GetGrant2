@@ -27,7 +27,16 @@ class LeadResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Пользователь')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Статус')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Создано')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -39,7 +48,9 @@ class LeadResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->paginated([10, 25, 50, 100]);
     }
 
     public static function getRelations(): array

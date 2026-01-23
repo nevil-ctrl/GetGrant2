@@ -18,9 +18,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique(User::class, 'email')],
-            'phone' => ['nullable', 'string', 'max:32'],
-            'phone_unvalidated' => ['nullable', 'in:0,1'],
-            'profile_type' => ['nullable', Rule::in(['student', 'parent'])],
+            'profile_type' => ['nullable', Rule::in(['student', 'teacher'])],
             'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
         ]);
 
@@ -28,29 +26,9 @@ class AuthController extends Controller
         $profileType = $validated['profile_type'] ?? 'student';
         $role = $profileType; // role всегда равен profile_type для обычных пользователей
 
-        $phone = $validated['phone'] ?? null;
-        $phoneValidated = ! empty($phone) && empty($validated['phone_unvalidated']);
-
-        // Серверная попытка нормализации через libphonenumber (если доступна) — помечаем номер валидным, если парсинг прошёл
-        $phoneCountry = $validated['phone_country'] ?? null;
-        if (! empty($phone) && class_exists('\libphonenumber\PhoneNumberUtil')) {
-            try {
-                $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-                $proto = $phoneUtil->parse($phone, strtoupper($phoneCountry ?? ''));
-                if ($phoneUtil->isPossibleNumber($proto) || $phoneUtil->isValidNumber($proto)) {
-                    $phone = $phoneUtil->format($proto, \libphonenumber\PhoneNumberFormat::E164);
-                    $phoneValidated = true;
-                }
-            } catch (\libphonenumber\NumberParseException $e) {
-                // ignore
-            }
-        }
-
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'phone' => $phone,
-            'phone_validated' => $phoneValidated,
             'profile_type' => $profileType,
             'role' => $role,
             'password' => Hash::make($validated['password']),

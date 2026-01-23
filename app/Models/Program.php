@@ -13,6 +13,7 @@ class Program extends Model
         'name',
         'university_id',
         'description',
+        'image',
         'field_of_study',
         'is_top',
         'career_info',

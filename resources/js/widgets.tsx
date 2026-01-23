@@ -3,13 +3,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { ChatWidget } from "./widgets/ChatWidget";
 import { TimelineWidget } from "./widgets/TimelineWidget";
-import { initPhoneInput } from "./widgets/phoneInput";
-
-import "intl-tel-input/build/css/intlTelInput.css";
 
 document.addEventListener("DOMContentLoaded", () => {
-    initPhoneInput();
-
     const widgets: Record<string, React.ComponentType<any>> = {
         chat: ChatWidget,
         timeline: TimelineWidget,

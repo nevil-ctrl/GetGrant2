@@ -22,7 +22,7 @@
 
         <div class="flex items-center gap-3">
             @auth
-                <a href="{{ route('dashboard.redirect') }}"
+                <a href="{{ route('dashboard') }}"
                     class="hidden md:inline-flex px-4 py-2 rounded-lg bg-[#1055b2] text-white text-sm font-semibold shadow hover:bg-[#003b8a] transition-colors">
                     Личный кабинет
                 </a>

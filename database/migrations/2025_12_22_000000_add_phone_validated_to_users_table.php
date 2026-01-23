@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            // Проверяем существование колонки phone перед добавлением phone_validated
+            if (Schema::hasColumn('users', 'phone') && !Schema::hasColumn('users', 'phone_validated')) {
             $table->boolean('phone_validated')->default(false)->after('phone');
+            }
         });
     }
 

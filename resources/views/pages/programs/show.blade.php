@@ -38,7 +38,7 @@
             <p class="text-sm text-[#6D7A89]">Авторизуйтесь, чтобы назначить менеджера и обсудить детали поступления.</p>
             <div class="flex flex-wrap gap-3">
                 @auth
-                    <a href="{{ route('dashboard.redirect') }}" class="px-5 py-2.5 rounded-lg bg-[#1055b2] text-white text-sm font-semibold hover:bg-[#003b8a] transition-colors">Перейти в кабинет</a>
+                    <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-lg bg-[#1055b2] text-white text-sm font-semibold hover:bg-[#003b8a] transition-colors">Перейти в кабинет</a>
                 @else
                     <a href="{{ route('register.form') }}" class="px-5 py-2.5 rounded-lg bg-[#1055b2] text-white text-sm font-semibold hover:bg-[#003b8a] transition-colors">Зарегистрироваться</a>
                     <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-lg border border-border text-sm font-semibold text-[#1A1A1A] hover:border-[#1055b2] hover:text-[#1055b2] transition-colors">Войти</a>

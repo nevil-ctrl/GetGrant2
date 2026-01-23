@@ -58,7 +58,7 @@ Route::middleware(['web', 'guest'])->group(function () {
 Route::get('/', [PageController::class, 'home'])->name('pages.home');
 
 Route::get('/countries', [PageController::class, 'countries'])->name('pages.countries');
-Route::get('/countries/{country}', [PageController::class, 'country'])->name('pages.countries.show');
+Route::get('/countries/{code}', [PageController::class, 'country'])->name('pages.countries.show');
 
 Route::get('/universities', [PageController::class, 'universities'])->name('pages.universities');
 Route::get('/universities/{university}', [PageController::class, 'university'])->name('pages.universities.show');
@@ -76,29 +76,51 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         $user = Auth::user();
 
         return match ($user->role) {
-            'student' => redirect()->route('student.dashboard'),
-            'parent' => redirect()->route('parent.dashboard'),
-            'manager' => redirect()->route('manager.dashboard'),
+            'student' => redirect()->route('dashboard'),
+            'parent' => redirect()->route('dashboard'),
+            'manager' => redirect()->route('dashboard'),
             'admin' => redirect('/admin'),
             default => redirect('/'),
         };
     })->name('dashboard.redirect');
 
-    Route::get('/student-dashboard', [DashboardController::class, 'student'])
-        ->middleware([CheckRole::class.':student'])
-        ->name('student.dashboard');
-
-    Route::get('/parent-dashboard', [DashboardController::class, 'parent'])
-        ->middleware([CheckRole::class.':parent'])
-        ->name('parent.dashboard');
-
-    Route::get('/manager-dashboard', [DashboardController::class, 'manager'])
-        ->middleware([CheckRole::class.':manager'])
-        ->name('manager.dashboard');
+    // Единый дашборд для всех ролей (студент, родитель, менеджер)
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware([CheckRole::class.':student,parent,manager'])
+        ->name('dashboard');
 
     Route::get('/admin-dashboard', fn () => view('dashboards.admin'))
         ->middleware([CheckRole::class.':admin'])
         ->name('admin.dashboard');
+
+    // LMS Routes - Lessons
+    Route::resource('lessons', \App\Http\Controllers\LessonController::class);
+    Route::get('/lessons/{lesson}/assignments', [\App\Http\Controllers\LessonController::class, 'assignments'])
+        ->name('lessons.assignments');
+
+    // LMS Routes - Assignments
+    Route::resource('assignments', \App\Http\Controllers\AssignmentController::class);
+    Route::post('/assignments/{assignment}/submit', [\App\Http\Controllers\AssignmentController::class, 'submit'])
+        ->name('assignments.submit');
+    Route::get('/assignments/{assignment}/review', [\App\Http\Controllers\AssignmentController::class, 'review'])
+        ->name('assignments.review');
+    Route::post('/assignments/{assignment}/review', [\App\Http\Controllers\AssignmentController::class, 'reviewStore'])
+        ->name('assignments.review.store');
+
+    // LMS Routes - Categories (only for managers and admins)
+    Route::resource('categories', \App\Http\Controllers\CategoryController::class)
+        ->middleware([CheckRole::class.':manager,admin']);
+
+    // LMS Routes - Buildings (only for managers and admins)
+    Route::resource('buildings', \App\Http\Controllers\BuildingController::class)
+        ->middleware([CheckRole::class.':manager,admin']);
+
+    // LMS Routes - Enrollments (only for managers and admins)
+    Route::resource('enrollments', \App\Http\Controllers\EnrollmentController::class)
+        ->middleware([CheckRole::class.':manager,admin']);
+    Route::post('/enrollments/bulk-update', [\App\Http\Controllers\EnrollmentController::class, 'bulkUpdate'])
+        ->middleware([CheckRole::class.':manager,admin'])
+        ->name('enrollments.bulk-update');
 });
 
 // Редирект /home → /dashboard

@@ -63,7 +63,23 @@ class ProgramResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Название')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('university.name')
+                    ->label('Университет')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('field_of_study')
+                    ->label('Направление')
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Активна')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Создано')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -75,7 +91,9 @@ class ProgramResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->paginated([10, 25, 50, 100]);
     }
 
     public static function getRelations(): array

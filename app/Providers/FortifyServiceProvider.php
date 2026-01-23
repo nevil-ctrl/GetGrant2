@@ -90,11 +90,9 @@ class FortifyServiceProvider extends ServiceProvider
                 return;
             }
 
-            $route = match ($user->profile_type) {
-                'student' => '/student-dashboard',
-                'parent' => '/parent-dashboard',
-                'manager' => '/manager-dashboard',
-                'admin' => '/admin-dashboard',
+            $route = match ($user->role) {
+                'student', 'parent', 'manager' => '/dashboard',
+                'admin' => '/admin',
                 default => '/dashboard',
             };
 
