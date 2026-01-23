@@ -37,18 +37,18 @@ class CreateNewUser implements CreatesNewUsers
         // Автоматическое назначение менеджера для студентов и родителей
         if (in_array($profileType, ['student', 'parent'])) {
             $manager = User::where('role', 'manager')
-                ->whereHas('managedStudents', function ($query) {
-                    $query->selectRaw('manager_id, COUNT(*) as count')
-                        ->groupBy('manager_id')
-                        ->havingRaw('COUNT(*) < 50'); // Максимум 50 студентов на менеджера
-                })
-                ->orWhereDoesntHave('managedStudents')
+                ->withCount('managedStudents')
+                ->get() // получаем коллекцию менеджеров
+                ->filter(fn($m) => $m->managed_students_count < 50) // фильтруем по количеству студентов
+                ->sortBy('managed_students_count') // выбираем того, у кого меньше всего студентов
                 ->first();
-            
+        
             if ($manager) {
                 $user->update(['manager_id' => $manager->id]);
             }
         }
+        
+        
 
         return $user;
     }
